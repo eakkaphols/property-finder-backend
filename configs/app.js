@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 module.exports = {
-  port: process.env.port || 3000,
+  port: process.env.port || 80,
   isProduction: process.env.NODE_ENV === "production",
   apiVersion: process.env.API_VERSION || 1,
   token_exp_days: process.env.TOKEN_EXP_DAYS || 1,

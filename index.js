@@ -31,5 +31,4 @@ const server = app.listen(config.port, () => {
   let port = server.address().port;
   console.log(`Server is running at http://${host}:${port}`);
   console.log(`Server is running in ${process.env.NODE_ENV} mode`);
-  //console.log(JSON.stringify(server.address()));
 });
