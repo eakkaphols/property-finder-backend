@@ -33,7 +33,7 @@ app.use((req, res, next) => {
 //   console.log(`Server is running in ${process.env.NODE_ENV} mode`);
 // });
 
-const server = app.listen(config.port, () => {
+const server = app.listen(process.env.PORT, () => {
   let host = server.address().address;
   let port = server.address().port;
   console.log(`Server is running at http://${host}:${port}`);
