@@ -21,7 +21,7 @@ app.get("/test2", function (req, res) {
 
 app.use((req, res, next) => {
   res.status(200).json({
-    message: "It works!",
+    message: "It works! test",
   });
 });
 
