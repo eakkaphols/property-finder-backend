@@ -41,4 +41,4 @@ app.use((req, res, next) => {
 // });
 
 // var port = process.env.PORT || 3000;
-app.listen(config.port);
+app.listen(process.env.PORT);
