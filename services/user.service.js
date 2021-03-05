@@ -85,6 +85,31 @@ const methods = {
       }
     });
   },
+
+  update(id, data) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const obj = await User.findById(id);
+        if (!obj) reject(ErrorNotFound("id: not found"));
+        await User.updateOne({ _id: id }, data);
+        resolve(Object.assign(obj, data));
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+
+  insert(data) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const obj = new User(data);
+        const inserted = await obj.save();
+        resolve(inserted);
+      } catch (error) {
+        reject(ErrorBadRequest(error.message));
+      }
+    });
+  },
 };
 
 module.exports = { ...methods };
