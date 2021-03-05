@@ -133,10 +133,53 @@ const validator = require("../../validators");
  *       '403':
  *         description: Username and password don't match
  */
+/**
+ * @swagger
+ * /updateUser/{id}:
+ *   put:
+ *     tags:
+ *       - Users
+ *     name: Update User
+ *     summary: Update user info
+ *     consumes:
+ *       - application/json
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: path
+ *         in: path
+ *         description: User ID
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - name: body
+ *         in: body
+ *         schema:
+ *           $ref: '#/definitions/user'
+ *           type: object
+ *           properties:
+ *             username :
+ *               type:string
+ *             fullname:
+ *               type: string
+ *             email:
+ *               type: string
+ *             tel:
+ *               type: string
+ *             role:
+ *               type: string
+ *         required:
+ *           - username
+ *     responses:
+ *       '200':
+ *         description: User info updated
+ *       '403':
+ *         description: No authorization / user not found
+ */
 router.get("/", controllers.onGetAll);
 router.get("/:id", controllers.onGetById);
 router.post("/login", controllers.onLogin);
-router.put("/:id", controllers.onUpdate);
+router.put("/updateuser:id", controllers.onUpdate);
 router.post("/register", controllers.onRegister);
 
 module.exports = router;
