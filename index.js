@@ -28,6 +28,10 @@ const swaggerOptions = {
         url: "http://localhost:3000/api/v1",
         description: "Development server",
       },
+      {
+        url: "https://xlan-property-finder.herokuapp.com//api/v1",
+        description: "Production server",
+      },
     ],
   },
   apis: ["./routes/api/user.js"],
