@@ -31,7 +31,7 @@ module.exports = async (app) => {
   require("../configs/databases");
 
   // CORS
-  const allowedOrigins = ["https://xlan-property-finder.herokuapp.com"];
+  const allowedOrigins = ["*"];
   const corsOptions = {
     origin: function (origin, callback) {
       if (!origin) return callback(null, true);
