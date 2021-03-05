@@ -22,6 +22,7 @@ const swaggerOptions = {
         email: "eakkaphol.s@hotmail.com",
       },
     },
+    schemes: ["http", "https"],
     servers: [
       {
         url: "http://localhost:3000/api/v1",
