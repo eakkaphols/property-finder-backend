@@ -29,7 +29,7 @@ const swaggerOptions = {
         description: "Development server",
       },
       {
-        url: "https://xlan-property-finder.herokuapp.com//api/v1",
+        url: "https://xlan-property-finder.herokuapp.com/api/v1",
         description: "Production server",
       },
     ],
