@@ -89,6 +89,7 @@ const methods = {
   update(id, data) {
     return new Promise(async (resolve, reject) => {
       try {
+        console.log(JSON.stringify(data));
         const obj = await User.findById(id);
         if (!obj) reject(ErrorNotFound("id: not found"));
         await User.updateOne({ _id: id }, data);

@@ -21,18 +21,19 @@ const methods = {
   async onLogin(req, res) {
     try {
       let result = await Service.login(req.body);
-      res.json(result);
+      res.status(200).json(result);
     } catch (error) {
-      res.error(error);
+      res.status(error.status).json(error);
     }
   },
 
   async onUpdate(req, res) {
     try {
       const result = await Service.update(req.params.id, req.body);
-      res.json(result);
+      res.status(200).json(result);
     } catch (error) {
-      res.error(error);
+      //res.error(error);
+      res.status(error.status).json(error);
     }
   },
 

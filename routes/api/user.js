@@ -87,6 +87,7 @@ const validator = require("../../validators");
  *          name: id
  *          schema:
  *            type: string
+ *            default: '6040464351a9918ce4b87c50'
  *          required: true
  *          description: The user id
  *      responses:
@@ -119,9 +120,11 @@ const validator = require("../../validators");
  *           properties:
  *             username:
  *               type: string
+ *               default: 'wanidas'
  *             password:
  *               type: string
  *               format: password
+ *               default: 'abc123**'
  *         required:
  *           - username
  *           - password
@@ -135,7 +138,7 @@ const validator = require("../../validators");
  */
 /**
  * @swagger
- * /updateUser/{id}:
+ * /users/updateuser/{id}:
  *   put:
  *     tags:
  *       - Users
@@ -146,12 +149,13 @@ const validator = require("../../validators");
  *     produces:
  *       - application/json
  *     parameters:
- *       - name: path
+ *       - name: id
  *         in: path
  *         description: User ID
  *         required: true
  *         schema:
  *           type: string
+ *           default: '6040464351a9918ce4b87c50'
  *       - name: body
  *         in: body
  *         schema:
@@ -179,7 +183,7 @@ const validator = require("../../validators");
 router.get("/", controllers.onGetAll);
 router.get("/:id", controllers.onGetById);
 router.post("/login", controllers.onLogin);
-router.put("/updateuser:id", controllers.onUpdate);
+router.put("/updateuser/:id", controllers.onUpdate);
 router.post("/register", controllers.onRegister);
 
 module.exports = router;
