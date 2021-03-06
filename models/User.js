@@ -15,12 +15,13 @@ const schema = new mongoose.Schema(
     },
     password: { type: String, index: true },
     fullname: { type: String },
+    role: {type:String },
     email: { type: String },
     tel: { type: Number },
-    // createdatdate: { type: date },
-    // updatedatdate: { type: date },
+    // createdatdate: { type: Date, default: Date.now },
+    // updatedatdate: { type: Date },
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 );
 
 // Apply the uniqueValidator plugin to userSchema.

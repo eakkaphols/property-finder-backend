@@ -1,3 +1,4 @@
+const { json } = require("express");
 const User = require("../models/User"),
   config = require("../configs/app"),
   jwt = require("jsonwebtoken"),
@@ -103,11 +104,37 @@ const methods = {
   insert(data) {
     return new Promise(async (resolve, reject) => {
       try {
+
+        const user = await User.findOne({ username: data.username });
+        if (user) {
+          reject(ErrorUnauthorized("Username already exists. Please try with another one."));
+        }
+
         const obj = new User(data);
         const inserted = await obj.save();
         resolve(inserted);
       } catch (error) {
         reject(ErrorBadRequest(error.message));
+      }
+    });
+  },
+
+  updatePassword(data) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const user = await User.findOne({ username: data.username });
+        user.password = data.password;
+
+
+
+
+        // const id = "60433ecff4e1a10004945133";
+        // const obj = await User.findById(id);
+        // if (!obj) reject(ErrorNotFound("id: not found"));
+        // await User.updateOne({ _id: id }, data);
+        resolve(Object.assign(obj, data));
+      } catch (error) {
+        reject(error);
       }
     });
   },

@@ -5,7 +5,9 @@ const methods = {
       let result = await Service.find(req);
       res.json(result);
     } catch (error) {
-      res.error(error);
+      res
+        .status(error.status)
+        .json({ status: error.status, message: error.message });
     }
   },
 
@@ -14,7 +16,9 @@ const methods = {
       let result = await Service.findById(req.params.id);
       res.status(200).json(result);
     } catch (error) {
-      res.error(error);
+      res
+        .status(error.status)
+        .json({ status: error.status, message: error.message });
     }
   },
 
@@ -23,7 +27,9 @@ const methods = {
       let result = await Service.login(req.body);
       res.status(200).json(result);
     } catch (error) {
-      res.status(error.status).json(error);
+      res
+        .status(error.status)
+        .json({ status: error.status, message: error.message });
     }
   },
 
@@ -33,16 +39,32 @@ const methods = {
       res.status(200).json(result);
     } catch (error) {
       //res.error(error);
-      res.status(error.status).json(error);
+      res
+        .status(error.status)
+        .json({ status: error.status, message: error.message });
     }
   },
 
   async onRegister(req, res) {
     try {
       let result = await Service.insert(req.body);
-      res.json(result, 201);
+      res.status(201).json(result);
     } catch (error) {
-      res.error(error);
+      console.log(error);
+       res
+         .status(error.status)
+         .json({ status: error.status, message: error.message });
+    }
+  },
+
+  async onUpdatePassword(req, res) {
+    try {
+      const result = await Service.updatePassword(req.body);
+      res.status(200).json(result);
+    } catch (error) {
+      res
+        .status(error.status)
+        .json({ status: error.status, message: error.message });
     }
   },
 };

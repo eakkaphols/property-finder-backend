@@ -185,5 +185,6 @@ router.get("/:id", controllers.onGetById);
 router.post("/login", controllers.onLogin);
 router.put("/updateuser/:id", controllers.onUpdate);
 router.post("/register", controllers.onRegister);
+router.put("/updatepassword", controllers.onUpdatePassword);
 
 module.exports = router;

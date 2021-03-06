@@ -52,11 +52,33 @@ app.get("/test", function (req, res) {
   res.send("/test It works!");
 });
 
+app.post("/demotoken", function (req, res) {
+  var token = req.param("token");
+  if (token != '')
+    token = decodingJWT(token)
+    res.status(200).json({
+      data: token,
+    });
+});
+
 app.use("/", (req, res, next) => {
   res.status(200).json({
     message: "It works!",
   });
 });
+
+const decodingJWT = (token) => {
+  console.log("decoding JWT token");
+  if (token !== null || token !== undefined) {
+    const base64String = token.split(".")[1];
+    const decodedValue = JSON.parse(
+      Buffer.from(base64String, "base64").toString("ascii")
+    );
+    console.log(decodedValue);
+    return decodedValue;
+  }
+  return null;
+};
 
 //const server = app.listen(config.port, () => {
 const server = app.listen(process.env.PORT, () => {
