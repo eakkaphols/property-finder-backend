@@ -1,6 +1,7 @@
 const express = require("express"),
   cors = require("cors");
 const { route } = require("../routes");
+(passport = require("passport")), (path = require("path"));
 
 module.exports = async (app) => {
   // Connect MongoDB
@@ -26,4 +27,6 @@ module.exports = async (app) => {
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
 
+  // Passport
+  require("../configs/passport");
 };

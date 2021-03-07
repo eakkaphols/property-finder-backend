@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const controllers = require("../../controllers/user.controller");
-//const auth = require("../auth");
+const auth = require("../auth"); 
 const validator = require("../../validators");
 
 /**
@@ -180,7 +180,7 @@ const validator = require("../../validators");
  *       '403':
  *         description: No authorization / user not found
  */
-router.get("/", controllers.onGetAll);
+router.get("/", auth.required, controllers.onGetAll);
 router.get("/:id", controllers.onGetById);
 router.post("/login", controllers.onLogin);
 router.put("/updateuser/:id", controllers.onUpdate);

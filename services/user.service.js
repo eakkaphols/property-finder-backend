@@ -123,16 +123,15 @@ const methods = {
     return new Promise(async (resolve, reject) => {
       try {
         const user = await User.findOne({ username: data.username });
+        if (!user) {
+          reject(ErrorUnauthorized("Couldn't find your account"));
+        }
+        //Set the new password
         user.password = data.password;
 
-
-
-
-        // const id = "60433ecff4e1a10004945133";
-        // const obj = await User.findById(id);
-        // if (!obj) reject(ErrorNotFound("id: not found"));
-        // await User.updateOne({ _id: id }, data);
-        resolve(Object.assign(obj, data));
+        // Save the updated user object
+        await user.save();
+        resolve({ message: "Your password has been updated." });
       } catch (error) {
         reject(error);
       }
