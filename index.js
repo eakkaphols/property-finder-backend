@@ -54,11 +54,10 @@ app.get("/test", function (req, res) {
 
 app.post("/demotoken", function (req, res) {
   var token = req.param("token");
-  if (token != '')
-    token = decodingJWT(token)
-    res.status(200).json({
-      data: token,
-    });
+  if (token != "") token = decodingJWT(token);
+  res.status(200).json({
+    data: token,
+  });
 });
 
 app.use("/", (req, res, next) => {
