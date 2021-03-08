@@ -15,7 +15,7 @@ const schema = new mongoose.Schema(
     },
     password: { type: String, index: true },
     fullname: { type: String },
-    role: {type:String },
+    role: { type: String },
     email: { type: String },
     tel: { type: Number },
     // createdatdate: { type: Date, default: Date.now },
@@ -31,8 +31,8 @@ schema.plugin(uniqueValidator);
 schema.methods.generateJWT = function (obj) {
   let today = new Date(),
     exp = new Date(today);
-  // exp.setDate(today.getDate() + config.token_exp_days || 1);
-  exp.setMinutes(today.getMinutes() + 30);
+  exp.setDate(today.getDate() + config.token_exp_days || 1);
+  //exp.setMinutes(today.getMinutes() + 30);
 
   return jwt.sign(
     {

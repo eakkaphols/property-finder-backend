@@ -28,6 +28,7 @@ const schema = new mongoose.Schema(
     },
     telephone: String,
     email: String,
+    approved: Boolean,
     postedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
   },
   { timestamps: true, versionKey: false }

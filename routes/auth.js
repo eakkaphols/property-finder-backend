@@ -1,5 +1,5 @@
 const jwt = require("express-jwt");
-    secret = require("../configs/app").secret;
+secret = require("../configs/app").secret;
 
 const getTokenFromHeader = (req) => {
   if (
@@ -18,11 +18,27 @@ const auth = {
     secret: secret,
     getToken: getTokenFromHeader,
   }),
-  optional: jwt({ 
+  optional: jwt({
     secret: secret,
     credentialsRequired: false,
     getToken: getTokenFromHeader,
   }),
 };
+
+// function authenticateToken(req, res, next) {
+//   const token = getTokenFromHeader;
+//   if (!token) return res.sendStatus(401); // if there isn't any token
+//   jwt({
+//     secret: secret,
+//     getToken: getTokenFromHeader,
+//   });
+//   // }, (err, user) => {
+//   //   if (err) {
+//   //     return res.sendStatus(403);
+//   //   }
+//   //   req.user = user;
+//   //   next();
+//   // });
+// }
 
 module.exports = auth;
