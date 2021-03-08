@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const controllers = require("../../controllers/post.controller");
-const upload = require("../../configs/multer");
+//const upload = require("../../configs/multer");
 const cloudinary = require("../../configs/cloudinary");
 // const config = require("../../configs/app");
 const fs = require("fs");
