@@ -37,23 +37,47 @@ router.post("/image-upload", (request, response) => {
     });
 });
 
-router.post("/imagetest", (req, res) => {
-  const file = req.files.photo;
-  // upload image here
-  cloudinary.uploader
-    .upload(file.tempFilePath, { use_filename: true, unique_filename: true })
-    .then((result) => {
-      response.status(200).send({
-        message: "success",
-        result,
-      });
-    })
-    .catch((error) => {
-      response.status(500).send({
-        message: "failure",
-        error,
-      });
-    });
+router.post("/imagetest", (req, res,next) => {
+  try {
+    const file = req.files.photo;
+    // upload image here
+    cloudinary.uploader.upload(
+      file.tempFilePath,
+      { use_filename: true, unique_filename: true },
+      (err, result) => {
+        try {
+          res.status(200).json({
+            message: "success",
+            result,
+          });
+        } catch (err) {
+          res.status(err.status).json({
+            status: err.status,
+            message: err.message,
+          });
+        }
+      }
+    );
+  } catch (error) {
+    res.status(401).json({ status: 401, message: error.message });
+    next(error);
+  }
+
+  // // upload image here
+  // cloudinary.uploader
+  //   .upload(file.tempFilePath, { use_filename: true, unique_filename: true })
+  //   .then((result) => {
+  //     response.status(200).json({
+  //       message: "success",
+  //       result,
+  //     });
+  //   })
+  //   .catch((error) => {
+  //     response.status(500).json({
+  //       message: "failure",
+  //       error,
+  //     });
+  //   });
 });
 
 // router.post("/image-stream", (request, response) => {
