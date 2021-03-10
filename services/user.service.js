@@ -104,10 +104,13 @@ const methods = {
   insert(data) {
     return new Promise(async (resolve, reject) => {
       try {
-
         const user = await User.findOne({ username: data.username });
         if (user) {
-          reject(ErrorUnauthorized("Username already exists. Please try with another one."));
+          reject(
+            ErrorUnauthorized(
+              "Username already exists. Please try with another one."
+            )
+          );
         }
 
         const obj = new User(data);

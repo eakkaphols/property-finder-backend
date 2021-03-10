@@ -5,7 +5,12 @@ const databases = {
   mongoDB() {
     const db = mongoose.connect(
       config.mongodbUri,
-      { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true },
+      {
+        useNewUrlParser: true,
+        autoCreate: true,
+        useCreateIndex: true,
+        useUnifiedTopology: true,
+      },
       (error) => {
         if (error) console.error("MongoDB error: ", error);
         console.log("MongoDB connected");

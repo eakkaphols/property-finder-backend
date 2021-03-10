@@ -25,7 +25,13 @@ const methods = {
     return new Promise(async (resolve, reject) => {
       try {
         Promise.all([
-          Post.find().sort(sort).limit(limit).skip(offset).populate("postedBy"),
+          Post.find()
+            .sort(sort)
+            .limit(limit)
+            .skip(offset)
+            .populate("listingType")
+            .populate("propertyType")
+            .populate("postedBy"),
           Post.countDocuments(),
         ])
           .then((result) => {
@@ -50,7 +56,10 @@ const methods = {
   findById(id) {
     return new Promise(async (resolve, reject) => {
       try {
-        const obj = await Post.findById(id).populate("postedBy");
+        const obj = await Post.findById(id)
+          .populate("listingType")
+          .populate("propertyType")
+          .populate("postedBy");
         if (!obj) reject(ErrorNotFound("id: not found"));
         resolve(obj.toJSON());
       } catch (error) {
@@ -60,6 +69,18 @@ const methods = {
   },
 
   insert(data) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const obj = new Post(data);
+        const inserted = await obj.save();
+        resolve(inserted);
+      } catch (error) {
+        reject(ErrorBadRequest(error.message));
+      }
+    });
+  },
+
+  insertWithImages(data) {
     return new Promise(async (resolve, reject) => {
       try {
         const obj = new Post(data);

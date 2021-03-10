@@ -7,10 +7,13 @@ const fs = require("fs");
 
 /* GET Posts listing. */
 router.get("/", controllers.onGetAll);
-/* GET Post by id. */
+/* GET Post by id. */ 
 router.get("/:id", controllers.onGetById);
 /* Post insert post. */
 router.post("/", controllers.onInsert);
+/* Post insert post. */
+router.post("/insert", controllers.onInsertWithImages);
+
 // router.put("/:id", controllers.onUpdate);
 // router.delete("/:id", controllers.onDelete);
 

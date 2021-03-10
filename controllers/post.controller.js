@@ -34,6 +34,17 @@ const methods = {
     }
   },
 
+  async onInsertWithImages(req, res) {
+    try {
+      const result = await Service.insertWithImages(req.body);
+      res.status(201).json(result);
+    } catch (error) {
+      res
+        .status(error.status)
+        .json({ status: error.status, message: error.message });
+    }
+  },
+
   //   async onUpdate(req, res) {
   //     try {
   //       const result = await Service.update(req.params.id, req.body);
