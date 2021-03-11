@@ -28,8 +28,8 @@ module.exports = async (app) => {
   var multer = require("multer");
 
   //Paser body
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: false }));
+  app.use(express.json({ limit: "50mb" }));
+  app.use(express.urlencoded({ limit: "50mb", extended: false }));
 
   // Passport
   require("../configs/passport");

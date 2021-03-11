@@ -207,8 +207,53 @@ const methods = {
       }
     });
   },
+  insertWithImages(data) {
+    return new Promise(async (resolve, reject) => {
+      let upload_res = [];
+      if (data.photo != null) {
+        const file = data.photo;
+        let upload_len = file.length;
 
-  insertWithImages(data, image) {
+        try {
+          if (upload_len > 0) {
+            for (let i = 0; i <= upload_len - 1; i++) {
+              let filePath = file[i].imagebase64;
+
+              await cloudinary.uploader.upload(
+                filePath,
+                {  unique_filename: true },
+                (err, result) => {
+                  try {
+                    upload_res.push({
+                      asset_id: result.asset_id,
+                      url: result.url,
+                    });
+                  } catch (err) {
+                    reject(ErrorBadRequest(err.message));
+                  }
+                }
+              );
+            }
+          }
+          //console.log(upload_res);
+        } catch (error) {
+          res.status(401).json({ status: 401, message: error.message });
+          next(error);
+        }
+      }
+
+      try {
+        data["photo"] = upload_res;
+        //console.log(data);
+        let obj = new Post(data);
+        const inserted = await obj.save();
+        resolve(inserted);
+      } catch (error) {
+        reject(ErrorBadRequest(error.message));
+      }
+    });
+  },
+  insertWithImagesV1(data, image) {
     return new Promise(async (resolve, reject) => {
       let upload_res = [];
       if (image != null) {

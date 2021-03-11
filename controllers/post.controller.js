@@ -65,7 +65,7 @@ const methods = {
 
   async onInsertWithImages(req, res) {
     try {
-      const result = await Service.insertWithImages(req.body, req.file);
+      const result = await Service.insertWithImages(req.body);
       res.status(201).json(result);
     } catch (error) {
       res
