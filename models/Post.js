@@ -42,9 +42,12 @@ const schema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    // photos: [{
-    //   url: string,
-    // }]
+    photo: [
+      {
+        asset_id: String,
+        url: String,
+      },
+    ],
   },
   { timestamps: true, versionKey: false }
 );
@@ -86,6 +89,7 @@ schema.methods.toJSON = function () {
     postedBy: this.postedBy,
     createdAt: this.createdAt,
     updatedAt: this.updatedAt,
+    photo: this.photo,
   };
 };
 

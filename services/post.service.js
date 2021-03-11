@@ -1,6 +1,8 @@
 const Post = require("../models/Post"),
   config = require("../configs/app"),
   { ErrorBadRequest, ErrorNotFound } = require("../configs/errorMethods");
+const cloudinary = require("../configs/cloudinary");
+const fs = require("fs");
 
 const methods = {
   scopeSearch(req) {
@@ -68,6 +70,45 @@ const methods = {
     });
   },
 
+  findByPostedId(req, id) {
+    const limit = +(req.query.size || config.pageLimit);
+    const offset = +(limit * ((req.query.page || 1) - 1));
+    const sort = { createdAt: -1 };
+    return new Promise(async (resolve, reject) => {
+      try {
+        Promise.all([
+          Post.find({
+            postedBy: id,
+          })
+            .sort(sort)
+            .limit(limit)
+            .skip(offset)
+            .populate("listingType")
+            .populate("propertyType")
+            .populate("postedBy"),
+          Post.countDocuments({
+            postedBy: id,
+          }),
+        ])
+          .then((result) => {
+            const rows = result[0],
+              count = result[1];
+            resolve({
+              total: count,
+              lastPage: Math.ceil(count / limit),
+              currPage: +req.query.page || 1,
+              rows: rows,
+            });
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+
   insert(data) {
     return new Promise(async (resolve, reject) => {
       try {
@@ -80,10 +121,45 @@ const methods = {
     });
   },
 
-  insertWithImages(data) {
+  insertWithImages(data,image) {
     return new Promise(async (resolve, reject) => {
+      let upload_res = [];
+      if (image != null) {
+        const file = image.photo;
+        let upload_len = file.length;
+      
+        try {
+          if (upload_len > 0) {
+            for (let i = 0; i <= upload_len - 1; i++) {
+              let filePath = file[i];
+
+              await cloudinary.uploader.upload(
+                filePath.tempFilePath,
+                { use_filename: true, unique_filename: true },
+                (err, result) => {
+                  try {
+                    upload_res.push({
+                      asset_id: result.asset_id,
+                      url: result.url,
+                    });
+                  } catch (err) {
+                    reject(ErrorBadRequest(err.message));
+                  }
+                }
+              );
+            }
+          }
+          //console.log(upload_res);
+        } catch (error) {
+          res.status(401).json({ status: 401, message: error.message });
+          next(error);
+        }
+      }
+
       try {
-        const obj = new Post(data);
+        data["photo"] = upload_res;
+        //console.log(data);
+        let obj = new Post(data);
         const inserted = await obj.save();
         resolve(inserted);
       } catch (error) {
@@ -105,18 +181,18 @@ const methods = {
   //     });
   //   },
 
-  //   delete(id) {
-  //     return new Promise(async (resolve, reject) => {
-  //       try {
-  //         const obj = await Post.findById(id);
-  //         if (!obj) reject(ErrorNotFound("id: not found"));
-  //         await Post.deleteOne({ _id: id });
-  //         resolve();
-  //       } catch (error) {
-  //         reject(error);
-  //       }
-  //     });
-  //   },
+  delete(id) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const obj = await Post.findById(id);
+        if (!obj) reject(ErrorNotFound("id: not found"));
+        await Post.deleteOne({ _id: id });
+        resolve({ status: "200", message: "Succsessfuly Deleted!!!" });
+      } catch (error) {
+        reject(ErrorNotFound("id: not found"));
+      }
+    });
+  },
 };
 
 module.exports = { ...methods };

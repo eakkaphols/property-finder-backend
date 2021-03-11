@@ -7,7 +7,9 @@ const fs = require("fs");
 
 /* GET Posts listing. */
 router.get("/", controllers.onGetAll);
-/* GET Post by id. */ 
+/* GET Post by postedById. */
+router.get("/postedby/:id", controllers.onGetByPostedId);
+/* GET Post by id. */
 router.get("/:id", controllers.onGetById);
 /* Post insert post. */
 router.post("/", controllers.onInsert);
@@ -15,7 +17,8 @@ router.post("/", controllers.onInsert);
 router.post("/insert", controllers.onInsertWithImages);
 
 // router.put("/:id", controllers.onUpdate);
-// router.delete("/:id", controllers.onDelete);
+
+router.delete("/:id", controllers.onDelete);
 
 router.post("/image-upload", async (req, res, next) => {
   try {
@@ -30,7 +33,7 @@ router.post("/image-upload", async (req, res, next) => {
         { use_filename: true, unique_filename: true },
         (err, result) => {
           try {
-            upload_res.push(result);
+            upload_res.push({ asset_id: result.asset_id, url: result.url });
           } catch (err) {
             res.status(err.status).json({
               status: err.status,

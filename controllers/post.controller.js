@@ -22,10 +22,20 @@ const methods = {
         .json({ status: error.status, message: error.message });
     }
   },
-
+  async onGetByPostedId(req, res) {
+    try {
+      let result = await Service.findByPostedId(req, req.params.id);
+      res.status(200).json(result);
+    } catch (error) {
+      res
+        .status(error.status)
+        .json({ status: error.status, message: error.message });
+    }
+  },
   async onInsert(req, res) {
     try {
-      const result = await Service.insert(req.body);
+      //const result = await Service.insert(req.body);
+      const result = await Service.insertWithImages(req.body,req.files);
       res.status(201).json(result);
     } catch (error) {
       res
@@ -36,7 +46,7 @@ const methods = {
 
   async onInsertWithImages(req, res) {
     try {
-      const result = await Service.insertWithImages(req.body);
+      const result = await Service.insertWithImages(req.body, req.file);
       res.status(201).json(result);
     } catch (error) {
       res
@@ -54,14 +64,16 @@ const methods = {
   //     }
   //   },
 
-  //   async onDelete(req, res) {
-  //     try {
-  //       await Service.delete(req.params.id);
-  //       res.success("success", 204);
-  //     } catch (error) {
-  //       res.error(error);
-  //     }
-  //   },
+  async onDelete(req, res) {
+    try {
+      const result = await Service.delete(req.params.id);
+      res.status(result.status).json(result);
+    } catch (error) {
+      res
+        .status(error.status)
+        .json({ status: error.status, message: error.message });
+    }
+  },
 
   //   async onLogin(req, res) {
   //     try {
