@@ -74,14 +74,14 @@ const methods = {
     }
   },
 
-  //   async onUpdate(req, res) {
-  //     try {
-  //       const result = await Service.update(req.params.id, req.body);
-  //       res.success(result);
-  //     } catch (error) {
-  //       res.error(error);
-  //     }
-  //   },
+    async onUpdate(req, res) {
+      try {
+        const result = await Service.update(req.params.id, req.body);
+        res.status(201).json(result);
+      } catch (error) {
+        res.error(error);
+      }
+    },
 
   async onDelete(req, res) {
     try {

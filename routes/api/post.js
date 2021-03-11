@@ -20,9 +20,10 @@ router.get("/:id", controllers.onGetById);
 /* Post insert post. */
 router.post("/", controllers.onInsert);
 /* Post insert post. */
-router.post("/insert", controllers.onInsertWithImages);
+//router.post("/insert", controllers.onInsertWithImages);
 
-// router.put("/:id", controllers.onUpdate);
+/* Post update post. */
+router.put("/:id", controllers.onUpdate);
 
 router.delete("/:id", controllers.onDelete);
 
@@ -121,8 +122,6 @@ function decodeBase64Image(dataString) {
 
   return response;
 }
-
-
 
 function decode_base64(base64str, filename) {
   var buf = Buffer.from(base64str, "base64");

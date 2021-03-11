@@ -300,18 +300,18 @@ const methods = {
     });
   },
 
-  //   update(id, data) {
-  //     return new Promise(async (resolve, reject) => {
-  //       try {
-  //         const obj = await Post.findById(id);
-  //         if (!obj) reject(ErrorNotFound("id: not found"));
-  //         await Post.updateOne({ _id: id }, data);
-  //         resolve(Object.assign(obj, data));
-  //       } catch (error) {
-  //         reject(error);
-  //       }
-  //     });
-  //   },
+    update(id, data) {
+      return new Promise(async (resolve, reject) => {
+        try {
+          const obj = await Post.findById(id);
+          if (!obj) reject(ErrorNotFound("id: not found"));
+          await Post.updateOne({ _id: id }, data);
+          resolve(Object.assign(obj, data));
+        } catch (error) {
+          reject(error);
+        }
+      });
+    },
 
   delete(id) {
     return new Promise(async (resolve, reject) => {
