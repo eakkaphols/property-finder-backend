@@ -17,7 +17,7 @@ const schema = new mongoose.Schema(
     fullname: { type: String },
     role: { type: String },
     email: { type: String },
-    tel: { type: Number },
+    tel: { type: String },
     // createdatdate: { type: Date, default: Date.now },
     // updatedatdate: { type: Date },
   },
@@ -58,6 +58,7 @@ schema.methods.validPassword = function (password) {
 // Custom field before save
 schema.pre("save", function (next) {
   this.password = this.passwordHash(this.password);
+  this.tel = this.tel.match(/\d/g).join("");
   next();
 });
 

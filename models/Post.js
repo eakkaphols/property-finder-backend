@@ -58,12 +58,6 @@ const schema = new mongoose.Schema(
   { timestamps: true, versionKey: false }
 );
 
-// const listingTypeSchema = new mongoose.Schema({
-//   listingTypeId: Number,
-//   listingTypeName: String,
-// });
-// const ListingType = mongoose.model("ListingType", listingTypeSchema);
-
 // Apply the uniqueValidator plugin to userSchema.
 schema.plugin(uniqueValidator, { status: 400 });
 
