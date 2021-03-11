@@ -11,7 +11,26 @@ const methods = {
         .json({ status: error.status, message: error.message });
     }
   },
-
+  async onGetPropertyApproved(req, res) {
+    try {
+      const result = await Service.findPropertyApproved(req);
+      res.json(result);
+    } catch (error) {
+      res
+        .status(error.status)
+        .json({ status: error.status, message: error.message });
+    }
+  },
+  async onGetPropertyPromote(req, res) {
+    try {
+      const result = await Service.findPropertyPromote(req);
+      res.json(result);
+    } catch (error) {
+      res
+        .status(error.status)
+        .json({ status: error.status, message: error.message });
+    }
+  },
   async onGetById(req, res) {
     try {
       let result = await Service.findById(req.params.id);
@@ -35,7 +54,7 @@ const methods = {
   async onInsert(req, res) {
     try {
       //const result = await Service.insert(req.body);
-      const result = await Service.insertWithImages(req.body,req.files);
+      const result = await Service.insertWithImages(req.body, req.files);
       res.status(201).json(result);
     } catch (error) {
       res

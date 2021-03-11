@@ -56,6 +56,90 @@ const methods = {
     });
   },
 
+  findPropertyApproved(req) {
+    const limit = +(req.query.size || config.pageLimit);
+    const offset = +(limit * ((req.query.page || 1) - 1));
+    const _q = methods.scopeSearch(req);
+    const sort = { createdAt: -1 };
+
+    return new Promise(async (resolve, reject) => {
+      try {
+        Promise.all([
+          Post.find({
+            status: "6049d71eae4fb2df678b20f3",
+          })
+            .sort(sort)
+            .limit(limit)
+            .skip(offset)
+            .populate("listingType")
+            .populate("propertyType")
+            .populate("postedBy")
+            .populate("status"),
+          Post.countDocuments({
+            status: "6049d71eae4fb2df678b20f3",
+          }),
+        ])
+          .then((result) => {
+            const rows = result[0],
+              count = result[1];
+            resolve({
+              total: count,
+              lastPage: Math.ceil(count / limit),
+              currPage: +req.query.page || 1,
+              rows: rows,
+            });
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+
+  findPropertyPromote(req) {
+    const limit = +(req.query.size || 10);
+    const offset = +(limit * ((req.query.page || 1) - 1));
+    const _q = methods.scopeSearch(req);
+    const sort = { createdAt: -1 };
+
+    return new Promise(async (resolve, reject) => {
+      try {
+        Promise.all([
+          Post.find({
+            isPromote: true,
+          })
+            .sort(sort)
+            .limit(limit)
+            .skip(offset)
+            .populate("listingType")
+            .populate("propertyType")
+            .populate("postedBy")
+            .populate("status"),
+          Post.countDocuments({
+            isPromote: true,
+          }),
+        ])
+          .then((result) => {
+            const rows = result[0],
+              count = result[1];
+            resolve({
+              total: count,
+              lastPage: Math.ceil(count / limit),
+              currPage: +req.query.page || 1,
+              rows: rows,
+            });
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+
   findById(id) {
     return new Promise(async (resolve, reject) => {
       try {

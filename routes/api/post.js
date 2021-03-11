@@ -7,6 +7,10 @@ const fs = require("fs");
 
 /* GET Posts listing. */
 router.get("/", controllers.onGetAll);
+/* GET Posts listing approved. */
+router.get("/propertylist", controllers.onGetPropertyApproved);
+/* GET Posts listing approved. */
+router.get("/promotelist", controllers.onGetPropertyPromote);
 /* GET Post by postedById. */
 router.get("/postedby/:id", controllers.onGetByPostedId);
 /* GET Post by id. */
