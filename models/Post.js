@@ -1,6 +1,7 @@
 require("./User");
 require("./ListingType");
 require("./PropertyType");
+require("./Status");
 const mongoose = require("mongoose"),
   uniqueValidator = require("mongoose-unique-validator");
 
@@ -48,6 +49,11 @@ const schema = new mongoose.Schema(
         url: String,
       },
     ],
+    status: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Status",
+      default: "6049d6d1ae4fb2df678b109a", // status waitting approval
+    },
   },
   { timestamps: true, versionKey: false }
 );
@@ -90,6 +96,7 @@ schema.methods.toJSON = function () {
     createdAt: this.createdAt,
     updatedAt: this.updatedAt,
     photo: this.photo,
+    status: this.status,
   };
 };
 

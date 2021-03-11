@@ -33,7 +33,8 @@ const methods = {
             .skip(offset)
             .populate("listingType")
             .populate("propertyType")
-            .populate("postedBy"),
+            .populate("postedBy")
+            .populate("status"),
           Post.countDocuments(),
         ])
           .then((result) => {
@@ -61,7 +62,8 @@ const methods = {
         const obj = await Post.findById(id)
           .populate("listingType")
           .populate("propertyType")
-          .populate("postedBy");
+          .populate("postedBy")
+          .populate("status");
         if (!obj) reject(ErrorNotFound("id: not found"));
         resolve(obj.toJSON());
       } catch (error) {
@@ -85,7 +87,8 @@ const methods = {
             .skip(offset)
             .populate("listingType")
             .populate("propertyType")
-            .populate("postedBy"),
+            .populate("postedBy")
+            .populate("status"),
           Post.countDocuments({
             postedBy: id,
           }),
@@ -121,13 +124,13 @@ const methods = {
     });
   },
 
-  insertWithImages(data,image) {
+  insertWithImages(data, image) {
     return new Promise(async (resolve, reject) => {
       let upload_res = [];
       if (image != null) {
         const file = image.photo;
         let upload_len = file.length;
-      
+
         try {
           if (upload_len > 0) {
             for (let i = 0; i <= upload_len - 1; i++) {
