@@ -2,12 +2,14 @@ const express = require("express"),
   cors = require("cors");
 const { route } = require("../routes");
 (passport = require("passport")), (path = require("path"));
-
 const fileupload = require("express-fileupload");
+
 
 module.exports = async (app) => {
   // Connect MongoDB
   require("../configs/databases");
+
+
 
   // // CORS
   // const allowedOrigins = ["*"];

@@ -44,6 +44,13 @@ const methods = {
   async onGetByPostedId(req, res) {
     try {
       let result = await Service.findByPostedId(req, req.params.id);
+
+      const postUserSocket = req.connectedUsers[req.params.id];
+
+      if (postUserSocket) {
+        req.io.to(postUserSocket).emit("post_response", result);
+      }
+
       res.status(200).json(result);
     } catch (error) {
       res
@@ -74,14 +81,14 @@ const methods = {
     }
   },
 
-    async onUpdate(req, res) {
-      try {
-        const result = await Service.update(req.params.id, req.body);
-        res.status(201).json(result);
-      } catch (error) {
-        res.error(error);
-      }
-    },
+  async onUpdate(req, res) {
+    try {
+      const result = await Service.update(req.params.id, req.body);
+      res.status(201).json(result);
+    } catch (error) {
+      res.error(error);
+    }
+  },
 
   async onDelete(req, res) {
     try {
