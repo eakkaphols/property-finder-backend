@@ -4,23 +4,21 @@ config = require("./configs/app");
 const http = require("http").Server(app);
 const io = require("socket.io")(http);
 
-io.on("connection", function (socket) {
-// connected io success
-console.log("A user connected ", socket.id);
-
-socket.on("disconnect", function () {
-  console.log("User disconnected");
-});
-
 const connectedUsers = {};
-const { user_id } = socket.handshake.query;
-connectedUsers[user_id] = socket.id;
-  
+io.on("connection", (socket) => {
+  // connected io success
+  console.log("A user connected ", socket.id);
+
+  socket.on("disconnect", function () {
+    console.log("User disconnected");
+  });
+
+  const { user_id } = socket.handshake.query;
+  connectedUsers[user_id] = socket.id;
 });
 
 //Express Configs
 require("./configs/express")(app);
-
 
 app.use((req, res, next) => {
   req.io = io;
@@ -28,7 +26,6 @@ app.use((req, res, next) => {
 
   return next();
 });
-
 
 //Routes
 app.use(require("./routes"));
@@ -38,8 +35,6 @@ app.use("/", (req, res, next) => {
     message: "It works!",
   });
 });
-
-
 
 // app.get("/test", function (req, res) {
 //   console.log("get /test");
