@@ -1,4 +1,4 @@
-const Service = require("../services/user.service");
+const Service = require("../services/favorite.service");
 const methods = {
   async onGetAll(req, res) {
     try {
@@ -13,7 +13,7 @@ const methods = {
 
   async onGetById(req, res) {
     try {
-      let result = await Service.findById(req.params.id);
+      let result = await Service.findById(req,req.params.id);
       res.status(200).json(result);
     } catch (error) {
       res
@@ -22,30 +22,7 @@ const methods = {
     }
   },
 
-  async onLogin(req, res) {
-    try {
-      let result = await Service.login(req.body);
-      res.status(200).json(result);
-    } catch (error) {
-      res
-        .status(error.status)
-        .json({ status: error.status, message: error.message });
-    }
-  },
-
-  async onUpdate(req, res) {
-    try {
-      const result = await Service.update(req.params.id, req.body);
-      res.status(200).json(result);
-    } catch (error) {
-      //res.error(error);
-      res
-        .status(error.status)
-        .json({ status: error.status, message: error.message });
-    }
-  },
-
-  async onRegister(req, res) {
+  async onInsert(req, res) {
     try {
       let result = await Service.insert(req.body);
       res.status(201).json(result);
@@ -57,10 +34,19 @@ const methods = {
     }
   },
 
-  async onUpdatePassword(req, res) {
+  async onUpdate(req, res) {
     try {
-      const result = await Service.updatePassword(req.body);
-      res.status(200).json(result);
+      const result = await Service.update(req.params.id, req.body);
+      res.status(201).json(result);
+    } catch (error) {
+      res.error(error);
+    }
+  },
+
+  async onDelete(req, res) {
+    try {
+      const result = await Service.delete(req.body,req.params.id);
+      res.status(result.status).json(result);
     } catch (error) {
       res
         .status(error.status)

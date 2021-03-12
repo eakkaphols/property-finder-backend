@@ -1,5 +1,6 @@
 require("./User");
 require("./ListingType");
+require("./Favorite");
 require("./PropertyType");
 require("./Status");
 const mongoose = require("mongoose"),

@@ -253,6 +253,8 @@ const methods = {
       }
     });
   },
+
+  
   insertWithImagesV1(data, image) {
     return new Promise(async (resolve, reject) => {
       let upload_res = [];

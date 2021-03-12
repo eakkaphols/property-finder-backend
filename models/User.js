@@ -55,6 +55,7 @@ schema.methods.validPassword = function (password) {
   return this.passwordHash(password) === this.password;
 };
 
+
 // Custom field before save
 schema.pre("save", function (next) {
   this.password = this.passwordHash(this.password);
