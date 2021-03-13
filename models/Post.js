@@ -36,7 +36,7 @@ const schema = new mongoose.Schema(
     address: { type: String, default: "" },
     telephone: { type: String, default: "" },
     email: { type: String, default: "" },
-    approved: { type: Boolean, default: true },
+    approved: { type: Boolean, default: false },
     waitingApproval: { type: Boolean, default: true },
     isPromote: { type: Boolean, default: false },
     postedBy: {

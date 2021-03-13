@@ -221,7 +221,7 @@ const methods = {
 
               await cloudinary.uploader.upload(
                 filePath,
-                {  unique_filename: true },
+                { unique_filename: true },
                 (err, result) => {
                   try {
                     upload_res.push({
@@ -254,7 +254,6 @@ const methods = {
     });
   },
 
-  
   insertWithImagesV1(data, image) {
     return new Promise(async (resolve, reject) => {
       let upload_res = [];
@@ -302,18 +301,18 @@ const methods = {
     });
   },
 
-    update(id, data) {
-      return new Promise(async (resolve, reject) => {
-        try {
-          const obj = await Post.findById(id);
-          if (!obj) reject(ErrorNotFound("id: not found"));
-          await Post.updateOne({ _id: id }, data);
-          resolve(Object.assign(obj, data));
-        } catch (error) {
-          reject(error);
-        }
-      });
-    },
+  update(id, data) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const obj = await Post.findById(id);
+        if (!obj) reject(ErrorNotFound("id: not found"));
+        await Post.updateOne({ _id: id }, data);
+        resolve(Object.assign(obj, data));
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
 
   delete(id) {
     return new Promise(async (resolve, reject) => {
@@ -324,6 +323,23 @@ const methods = {
         resolve({ status: "200", message: "Succsessfuly Deleted!!!" });
       } catch (error) {
         reject(ErrorNotFound("id: not found"));
+      }
+    });
+  },
+
+  approval(id) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const obj = await Post.findById(id);
+        if (!obj) reject(ErrorNotFound("id: not found"));
+        obj.approved = true;
+        obj.waitingApproval = false;
+        obj.status = "6049d71eae4fb2df678b20f3";
+        await obj.save();
+        
+        resolve(Object.assign(obj));
+      } catch (error) {
+        reject(error);
       }
     });
   },
