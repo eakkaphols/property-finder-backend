@@ -4,12 +4,9 @@ const { route } = require("../routes");
 (passport = require("passport")), (path = require("path"));
 const fileupload = require("express-fileupload");
 
-
 module.exports = async (app) => {
   // Connect MongoDB
   require("../configs/databases");
-
-
 
   // // CORS
   // const allowedOrigins = ["*"];
@@ -27,6 +24,25 @@ module.exports = async (app) => {
   // };
   // app.use(cors(corsOptions));
 
+  //app.use(cors({ credentials: true }));
+  //app.options("*", cors());
+  //app.use(cors({ credentials: true, origin: true }));
+  app.use(cors());
+
+  // app.use(function (req, res, next) {
+  //   res.setHeader("Access-Control-Allow-Origin", "*");
+  //   res.setHeader(
+  //     "Access-Control-Allow-Methods",
+  //     "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  //   );
+  //   res.setHeader(
+  //     "Access-Control-Allow-Headers",
+  //     "X-Requested-With,Authorization,Content-Type"
+  //   );
+  //   res.setHeader("Access-Control-Allow-Credentials", true);
+  //   next();
+  // });
+
   var multer = require("multer");
 
   //Paser body
@@ -42,4 +58,12 @@ module.exports = async (app) => {
       useTempFiles: true,
     })
   );
+
+
+  app.use((req, res, next) => {
+    req.io = '1234';
+    //req.connectedUsers = connectedUsers;
+
+    return next();
+  });
 };

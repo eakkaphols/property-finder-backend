@@ -44,10 +44,11 @@ const methods = {
   async onGetByPostedId(req, res) {
     try {
       let result = await Service.findByPostedId(req, req.params.id);
-
       const myPropertySocket = req.connectedUsers[req.params.id];
+      // console.log(myPropertySocket, "88888888888888888888888");
 
       if (myPropertySocket) {
+        //   console.log(myPropertySocket);
         req.io.to(myPropertySocket).emit("myproperty_response", result);
       }
 
@@ -63,13 +64,11 @@ const methods = {
       //const result = await Service.insert(req.body);
       const result = await Service.insertWithImages(req.body, req.files);
 
-
       let rsSocket = await Service.findByPostedId(req, result.postedBy);
       const myPropertySocket = req.connectedUsers[(req, result.postedBy)];
       if (myPropertySocket) {
         req.io.to(myPropertySocket).emit("myproperty_response", rsSocket);
       }
-
 
       res.status(201).json(result);
     } catch (error) {
@@ -117,10 +116,12 @@ const methods = {
       // if (postingUserSocket) {
       //   req.io.to(postingUserSocket).emit("postapproval_response", result);
       // }
-
+      //console.log("wwwwwww");
       let rsSocket = await Service.findByPostedId(req, req.body.postedBy);
-      const myPropertySocket = req.connectedUsers[(req, req.body.postedBy)];
+      const myPropertySocket = req.connectedUsers[req.body.postedBy];
+
       if (myPropertySocket) {
+        //console.log(myPropertySocket, "xxxxxxx");
         req.io.to(myPropertySocket).emit("myproperty_response", rsSocket);
       }
 

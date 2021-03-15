@@ -224,9 +224,10 @@ const methods = {
                 { unique_filename: true },
                 (err, result) => {
                   try {
+                    console.log(result);
                     upload_res.push({
                       asset_id: result.asset_id,
-                      url: result.url,
+                      url: result.secure_url,
                     });
                   } catch (err) {
                     reject(ErrorBadRequest(err.message));
@@ -271,6 +272,7 @@ const methods = {
                 { use_filename: true, unique_filename: true },
                 (err, result) => {
                   try {
+                    
                     upload_res.push({
                       asset_id: result.asset_id,
                       url: result.url,
