@@ -4,6 +4,7 @@ const validator = require("../../validators");
 
 router.get("/", controllers.onGetAll);
 router.get("/:id", controllers.onGetById);
+router.get("/postedby/:id", controllers.onGetByPostedById);
 router.post("/", controllers.onInsert);
 router.put("/:id", controllers.onUpdate);
 router.delete("/:id", controllers.onDelete);

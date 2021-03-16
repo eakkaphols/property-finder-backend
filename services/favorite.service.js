@@ -28,8 +28,11 @@ const methods = {
             obj.favorites.post.push(data.postId);
             obj.save(function (err, obj) {
               if (err) throw err;
-              console.log("Post added");
-              resolve(obj);
+              resolve({
+                status: "201",
+                message: "Added Succsessfuly !!!",
+                data: obj,
+              });
             });
           });
         } else {
@@ -93,6 +96,36 @@ const methods = {
     return new Promise(async (resolve, reject) => {
       try {
         Promise.all([
+          Favorite.findById(id).populate("postedBy").populate("favorites.post"),
+          Favorite.countDocuments({
+            postedBy: id,
+          }),
+        ])
+          .then((result) => {
+            const rows = result[0],
+              count = result[1];
+            resolve({
+              total: count,
+              lastPage: Math.ceil(count / limit),
+              currPage: +req.query.page || 1,
+              rows: rows,
+            });
+          })
+          .catch((error) => {
+            reject(error);
+          });
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+  findByPostedById(req, id) {
+    const limit = +(req.query.size || config.pageLimit);
+    const offset = +(limit * ((req.query.page || 1) - 1));
+    //const sort = { createdAt: -1 };
+    return new Promise(async (resolve, reject) => {
+      try {
+        Promise.all([
           Favorite.find({
             postedBy: id,
           })
@@ -120,7 +153,6 @@ const methods = {
       }
     });
   },
-
   delete(req, id) {
     return new Promise(async (resolve, reject) => {
       try {

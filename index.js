@@ -10,16 +10,23 @@ const server = http.Server(app);
 const io = require("socket.io")(server);
 
 let connectedUsers = {};
-io.on("connection", (socket) => {
+let connections = [];
+io.sockets.on("connection", (socket) => {
   const { user_id } = socket.handshake.query;
   connectedUsers[user_id] = socket.id;
 
   // connected io success
   console.log("User connected :", socket.id);
   //console.log("connectedUsers : ", socket.handshake.query);
-  console.log("user setup is : ", connectedUsers);
+  //console.log("user setup is : ", connectedUsers);
+  connections.push(socket.id);
+  console.log("Connected: %s sockets connected", connections.length);
+  console.log(connections);
+
   socket.on("disconnect", function () {
-    console.log("Received: disconnect event from client: " + socket.id);
+    connections.splice(connections.indexOf(socket.id), 1);
+    console.log("User disconnected: " + socket.id);
+    console.log("Disconnected: %s sockets remaining.", connections.length);
   });
 
   socket.emit("welcome", `welcome client id #${socket.id}`);

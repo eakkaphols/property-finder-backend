@@ -28,7 +28,7 @@ router.put("/:id", controllers.onUpdate);
 /* Post delete post. */
 router.delete("/:id", controllers.onDelete);
 
-router.post("/:postedby/approvals", controllers.onApproval);
+router.post("/:id/approvals", controllers.onApproval);
 
 router.post("/image-upload", async (req, res, next) => {
   try {
