@@ -44,9 +44,13 @@ const methods = {
   async onGetByPostedId(req, res) {
     try {
       let result = await Service.findByPostedId(req, req.params.id);
-      const myPropertySocket = req.connectedUsers[req.params.id];
-      if (myPropertySocket) {
-        req.io.to(myPropertySocket).emit("myproperty_response", result);
+      //const myPropertySocket = req.connectedUsers[req.params.id];
+      // if (myPropertySocket) {
+      //   req.io.to(myPropertySocket).emit("myproperty_response", result);
+      // }
+      const userid = req.query.user_id;
+      if(req.connectedUsers){
+        req.io.emit(`myproperty-userid-$userid`, result);
       }
 
       res.status(200).json(result);
@@ -62,9 +66,14 @@ const methods = {
       const result = await Service.insertWithImages(req.body, req.files);
 
       let rsSocket = await Service.findByPostedId(req, result.postedBy);
-      const myPropertySocket = req.connectedUsers[result.postedBy];
-      if (myPropertySocket) {
-        req.io.to(myPropertySocket).emit("myproperty_response", rsSocket);
+      // const myPropertySocket = req.connectedUsers[result.postedBy];
+      // if (myPropertySocket) {
+      //   req.io.to(myPropertySocket).emit("myproperty_response", rsSocket);
+      // }
+
+      const userid = req.query.user_id;
+      if(req.connectedUsers){
+        req.io.emit(`myproperty-userid-$userid`, rsSocket);
       }
 
       res.status(201).json(result);
@@ -117,10 +126,15 @@ const methods = {
     try {
       const result = await Service.approval(req.params.id);
       let rsSocket = await Service.findByPostedId(req, result.postedBy);
-      const myPropertySocket = req.connectedUsers[result.postedBy];
-      if (myPropertySocket) {
-        req.io.to(myPropertySocket).emit("myproperty_response", rsSocket);
+      // const myPropertySocket = req.connectedUsers[result.postedBy];
+      // if (myPropertySocket) {
+      //   req.io.to(myPropertySocket).emit("myproperty_response", rsSocket);
+      // }
+      const userid = req.query.user_id;
+      if(req.connectedUsers){
+        req.io.emit(`myproperty-userid-$userid`, result);
       }
+
       let rsSocket2 = await Service.findPropertyApproved(req, res);
       req.io.emit("propertylist_response", rsSocket2);
 
