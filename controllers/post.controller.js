@@ -49,7 +49,7 @@ const methods = {
       //   req.io.to(myPropertySocket).emit("myproperty_response", result);
       // }
       const userid = req.query.user_id;
-      if(req.connectedUsers){
+      if (req.connectedUsers) {
         req.io.emit(`myproperty-userid-$userid`, result);
       }
 
@@ -72,7 +72,7 @@ const methods = {
       // }
 
       const userid = req.query.user_id;
-      if(req.connectedUsers){
+      if (req.connectedUsers) {
         req.io.emit(`myproperty-userid-$userid`, rsSocket);
       }
 
@@ -101,7 +101,7 @@ const methods = {
 
       let rsSocket = await Service.findPropertyApproved(req, res);
       req.io.emit("propertylist_response", rsSocket);
-      
+
       res.status(201).json(result);
     } catch (error) {
       res.error(error);
@@ -131,8 +131,8 @@ const methods = {
       //   req.io.to(myPropertySocket).emit("myproperty_response", rsSocket);
       // }
       const userid = req.query.user_id;
-      if(req.connectedUsers){
-        req.io.emit(`myproperty-userid-$userid`, result);
+      if (req.connectedUsers) {
+        req.io.emit(`myproperty-userid-$userid`, rsSocket);
       }
 
       let rsSocket2 = await Service.findPropertyApproved(req, res);
