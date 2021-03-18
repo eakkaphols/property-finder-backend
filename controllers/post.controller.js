@@ -50,7 +50,7 @@ const methods = {
       // }
       const userid = req.query.user_id;
       if (req.connectedUsers) {
-        req.io.emit(`myproperty-userid-$userid`, result);
+        req.io.emit(`myproperty-userid-${userid}`, result);
       }
 
       res.status(200).json(result);
@@ -73,7 +73,7 @@ const methods = {
 
       const userid = req.query.user_id;
       if (req.connectedUsers) {
-        req.io.emit(`myproperty-userid-$userid`, rsSocket);
+        req.io.emit(`myproperty-userid-${userid}`, rsSocket);
       }
 
       res.status(201).json(result);
@@ -132,7 +132,7 @@ const methods = {
       // }
       const userid = req.query.user_id;
       if (req.connectedUsers) {
-        req.io.emit(`myproperty-userid-$userid`, rsSocket);
+        req.io.emit(`myproperty-userid-${userid}`, rsSocket);
       }
 
       let rsSocket2 = await Service.findPropertyApproved(req, res);
