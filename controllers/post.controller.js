@@ -14,6 +14,7 @@ const methods = {
   async onGetPropertyApproved(req, res) {
     try {
       const result = await Service.findPropertyApproved(req);
+      req.io.emit("propertylist_response", result);
       res.json(result);
     } catch (error) {
       res
@@ -24,6 +25,7 @@ const methods = {
   async onGetPropertyPromote(req, res) {
     try {
       const result = await Service.findPropertyPromote(req);
+      req.io.emit("promotelist_response", result);
       res.json(result);
     } catch (error) {
       res
@@ -99,7 +101,7 @@ const methods = {
     try {
       const result = await Service.update(req.params.id, req.body);
 
-      let rsSocket = await Service.findPropertyApproved(req, res);
+      let rsSocket = await Service.findPropertyApproved(req);
       req.io.emit("propertylist_response", rsSocket);
 
       res.status(201).json(result);
@@ -112,7 +114,7 @@ const methods = {
     try {
       const result = await Service.delete(req.params.id);
 
-      let rsSocket = await Service.findPropertyApproved(req, res);
+      let rsSocket = await Service.findPropertyApproved(req);
       req.io.emit("propertylist_response", rsSocket);
 
       res.status(result.status).json(result);
@@ -130,12 +132,54 @@ const methods = {
       // if (myPropertySocket) {
       //   req.io.to(myPropertySocket).emit("myproperty_response", rsSocket);
       // }
-      const userid = req.query.user_id;
+      const userid = result.postedBy;
       if (req.connectedUsers) {
         req.io.emit(`myproperty-userid-${userid}`, rsSocket);
       }
 
-      let rsSocket2 = await Service.findPropertyApproved(req, res);
+      let rsSocket2 = await Service.findPropertyApproved(req);
+      req.io.emit("propertylist_response", rsSocket2);
+
+      res.status(201).json(result);
+    } catch (error) {
+      res
+        .status(error.status)
+        .json({ status: error.status, message: error.message });
+    }
+  },
+
+  async onRejection(req, res) {
+    try {
+      const result = await Service.rejection(req.params.id);
+      let rsSocket = await Service.findByPostedId(req, result.postedBy);
+
+      const userid = result.postedBy;
+      if (req.connectedUsers) {
+        req.io.emit(`myproperty-userid-${userid}`, rsSocket);
+      }
+
+      res.status(201).json(result);
+    } catch (error) {
+      res
+        .status(error.status)
+        .json({ status: error.status, message: error.message });
+    }
+  },
+
+  async onPromote(req, res) {
+    try {
+      const result = await Service.promote(req.params.id);
+
+      let rsSocket = await Service.findByPostedId(req, result.postedBy);
+
+      const userid = result.postedBy;
+      if (req.connectedUsers) {
+        req.io.emit(`myproperty-userid-${userid}`, rsSocket);
+      }
+      const rsSocket1 = await Service.findPropertyPromote(req);
+      req.io.emit("promotelist_response", rsSocket1);
+
+      let rsSocket2 = await Service.findPropertyApproved(req);
       req.io.emit("propertylist_response", rsSocket2);
 
       res.status(201).json(result);

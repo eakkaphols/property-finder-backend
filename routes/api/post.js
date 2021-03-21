@@ -28,89 +28,96 @@ router.put("/:id", controllers.onUpdate);
 /* Post delete post. */
 router.delete("/:id", controllers.onDelete);
 
+/*Post Approved*/
 router.post("/:id/approvals", controllers.onApproval);
 
-router.post("/image-upload", async (req, res, next) => {
-  try {
-    const file = req.files.photo;
-    let upload_len = file.length;
-    let upload_res = [];
-    for (let i = 0; i <= upload_len - 1; i++) {
-      let filePath = file[i];
+/*Post Reject*/
+router.post("/:id/rejections", controllers.onRejection);
 
-      await cloudinary.uploader.upload(
-        filePath.tempFilePath,
-        { use_filename: true, unique_filename: true },
-        (err, result) => {
-          try {
-            upload_res.push({ asset_id: result.asset_id, url: result.url });
-          } catch (err) {
-            res.status(err.status).json({
-              status: err.status,
-              message: err.message,
-            });
-          }
-        }
-      );
-    }
-    console.log(upload_res);
-    res.status(200).json({
-      message: "Upload image successfully",
-      result: upload_res,
-    });
-  } catch (error) {
-    res.status(401).json({ status: 401, message: error.message });
-    next(error);
-  }
-});
+/*Post Promote*/
+router.post("/:id/promote", controllers.onPromote);
 
-router.post("/image-uploadV1", (request, response) => {
-  // collected image from a user
-  const data = {
-    image: request.body.image,
-  };
+// router.post("/image-upload", async (req, res, next) => {
+//   try {
+//     const file = req.files.photo;
+//     let upload_len = file.length;
+//     let upload_res = [];
+//     for (let i = 0; i <= upload_len - 1; i++) {
+//       let filePath = file[i];
 
-  // upload image here
-  cloudinary.uploader
-    .upload(data.image, { use_filename: true, unique_filename: true })
-    .then((result) => {
-      response.status(200).send({
-        message: "success",
-        result,
-      });
-    })
-    .catch((error) => {
-      response.status(500).send({
-        message: "failure",
-        error,
-      });
-    });
-});
+//       await cloudinary.uploader.upload(
+//         filePath.tempFilePath,
+//         { use_filename: true, unique_filename: true },
+//         (err, result) => {
+//           try {
+//             upload_res.push({ asset_id: result.asset_id, url: result.url });
+//           } catch (err) {
+//             res.status(err.status).json({
+//               status: err.status,
+//               message: err.message,
+//             });
+//           }
+//         }
+//       );
+//     }
+//     console.log(upload_res);
+//     res.status(200).json({
+//       message: "Upload image successfully",
+//       result: upload_res,
+//     });
+//   } catch (error) {
+//     res.status(401).json({ status: 401, message: error.message });
+//     next(error);
+//   }
+// });
 
-router.post("/image64", (request, response) => {
-  // collected image from a user
-  const data = {
-    image: request.body.image,
-  };
+// router.post("/image-uploadV1", (request, response) => {
+//   // collected image from a user
+//   const data = {
+//     image: request.body.image,
+//   };
 
-  // upload image here
-  cloudinary.uploader
-    .upload(data.image, {
-      unique_filename: true,
-    })
-    .then((result) => {
-      response.status(200).send({
-        message: "success",
-        result,
-      });
-    })
-    .catch((error) => {
-      response.status(500).send({
-        message: "failure",
-        error,
-      });
-    });
-});
+//   // upload image here
+//   cloudinary.uploader
+//     .upload(data.image, { use_filename: true, unique_filename: true })
+//     .then((result) => {
+//       response.status(200).send({
+//         message: "success",
+//         result,
+//       });
+//     })
+//     .catch((error) => {
+//       response.status(500).send({
+//         message: "failure",
+//         error,
+//       });
+//     });
+// });
+
+// router.post("/image64", (request, response) => {
+//   // collected image from a user
+//   const data = {
+//     image: request.body.image,
+//   };
+
+//   // upload image here
+//   cloudinary.uploader
+//     .upload(data.image, {
+//       unique_filename: true,
+//     })
+//     .then((result) => {
+//       response.status(200).send({
+//         message: "success",
+//         result,
+//       });
+//     })
+//     .catch((error) => {
+//       response.status(500).send({
+//         message: "failure",
+//         error,
+//       });
+//     });
+// });
 
 function decodeBase64Image(dataString) {
   var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);

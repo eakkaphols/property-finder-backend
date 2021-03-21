@@ -272,7 +272,6 @@ const methods = {
                 { use_filename: true, unique_filename: true },
                 (err, result) => {
                   try {
-                    
                     upload_res.push({
                       asset_id: result.asset_id,
                       url: result.url,
@@ -338,7 +337,42 @@ const methods = {
         obj.waitingApproval = false;
         obj.status = "6049d71eae4fb2df678b20f3";
         await obj.save();
-        
+
+        resolve(Object.assign(obj));
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+
+  rejection(id) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const obj = await Post.findById(id);
+        if (!obj) reject(ErrorNotFound("id: not found"));
+        obj.approved = false;
+        obj.waitingApproval = false;
+        obj.status = "6049d745ae4fb2df678b2942";
+        await obj.save();
+
+        resolve(Object.assign(obj));
+      } catch (error) {
+        reject(error);
+      }
+    });
+  },
+
+  promote(id) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const obj = await Post.findById(id);
+        if (!obj) reject(ErrorNotFound("id: not found"));
+        obj.isPromote = !obj.isPromote;
+        obj.approved = true;
+        obj.waitingApproval = false;
+        obj.status = "6049d71eae4fb2df678b20f3";
+        await obj.save();
+
         resolve(Object.assign(obj));
       } catch (error) {
         reject(error);
