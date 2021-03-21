@@ -350,6 +350,7 @@ const methods = {
       try {
         const obj = await Post.findById(id);
         if (!obj) reject(ErrorNotFound("id: not found"));
+        obj.isPromote = false;
         obj.approved = false;
         obj.waitingApproval = false;
         obj.status = "6049d745ae4fb2df678b2942";
