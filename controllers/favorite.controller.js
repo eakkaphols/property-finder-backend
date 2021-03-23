@@ -26,12 +26,19 @@ const methods = {
     try {
       let result = await Service.findByPostedById(req, req.params.id);
 
-      if (req.params.id) {
-        const myPropertySocket = req.connectedUsers[req.params.id];
-        if (myPropertySocket) {
-          req.io.to(myPropertySocket).emit("myfavorite_response", result);
-        }
+
+      const userid = req.params.id;
+      if (req.connectedUsers) {
+        req.io.emit(`myfavorite-userid-${userid}`, result);
       }
+
+
+      // if (req.params.id) {
+      //   const myPropertySocket = req.connectedUsers[req.params.id];
+      //   if (myPropertySocket) {
+      //     req.io.to(myPropertySocket).emit("myfavorite_response", result);
+      //   }
+      // }
 
       res.status(200).json(result);
     } catch (error) {
@@ -49,10 +56,15 @@ const methods = {
           req,
           result.data.postedBy
         );
-        const myPropertySocket = req.connectedUsers[result.data.postedBy];
-        if (myPropertySocket) {
-          req.io.to(myPropertySocket).emit("myfavorite_response", rsSocket);
+
+        const userid = result.postedBy;
+        if (req.connectedUsers) {
+          req.io.emit(`myfavorite-userid-${userid}`, rsSocket);
         }
+        // const myPropertySocket = req.connectedUsers[result.data.postedBy];
+        // if (myPropertySocket) {
+        //   req.io.to(myPropertySocket).emit("myfavorite_response", rsSocket);
+        // }
       }
       res.status(201).json(result);
     } catch (error) {
@@ -78,10 +90,17 @@ const methods = {
 
       if (req.body.postedBy) {
         let rsSocket = await Service.findByPostedById(req, req.body.postedBy);
-        const myPropertySocket = req.connectedUsers[req.body.postedBy];
-        if (myPropertySocket) {
-          req.io.to(myPropertySocket).emit("myfavorite_response", rsSocket);
-        }
+
+
+         const userid = req.body.postedBy;
+         if (req.connectedUsers) {
+           req.io.emit(`myfavorite-userid-${userid}`, rsSocket);
+         }
+
+        // const myPropertySocket = req.connectedUsers[req.body.postedBy];
+        // if (myPropertySocket) {
+        //   req.io.to(myPropertySocket).emit("myfavorite_response", rsSocket);
+        // }
       }
 
       res.status(result.status).json(result);
