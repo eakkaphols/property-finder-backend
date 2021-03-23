@@ -26,7 +26,7 @@ const methods = {
     try {
       let result = await Service.findByPostedById(req, req.params.id);
 
-
+      
       const userid = req.params.id;
       if (req.connectedUsers) {
         req.io.emit(`myfavorite-userid-${userid}`, result);
@@ -56,8 +56,7 @@ const methods = {
           req,
           result.data.postedBy
         );
-
-        const userid = result.postedBy;
+        const userid = result.data.postedBy;
         if (req.connectedUsers) {
           req.io.emit(`myfavorite-userid-${userid}`, rsSocket);
         }
